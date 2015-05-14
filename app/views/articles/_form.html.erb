@@ -1,0 +1,108 @@
+
+<section class="panel">
+  <header class="panel-heading font-bold">
+    <%= (controller_name=="articles" && action_name == "new") ?  "New Article" : "Edit Article"%>
+  </header>
+  <div class="panel-body">
+    <%= form_for([@issue, @article], html: {class:"form-horizontal", multipart: true}) do |f| %>
+        <%= error_messages!(@article)%>
+        <div class="form-group">
+          <%= f.label "Article", class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+          <%= f.label :description, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.text_area :description, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label :editor, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.select("editor", User.all.collect {|p| [p.name, p.name] }, { include_blank: true, class: "form-control", prompt: 'Select Editor'}) %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label :photographer, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.select("photographer", User.all.collect {|p| [p.name, p.name] }, { include_blank: true, class: "form-control",prompt: 'Select Photographer' }) %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label :contributor, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.select(:contributor, User.all.collect {|p| [p.name, p.name] }, { include_blank: true, class: "form-control",prompt: 'Select Contributor' }) %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label :main_contact, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.select(:contact_id, Contact.all.collect {|p| [p.name, p.id] }, { class: "form-control",prompt: 'Select Contact' }) %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+
+        <div class="form-group">
+          <%= f.label "Print Deadline", class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.text_field :deadline, class: "form-control", id: "datepicker" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+
+        <div class="form-group">
+          <%= f.label :copy_complete, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.check_box :copy_complete, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label "photo_complete", class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.check_box :photo_complete, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%= f.label :print_ready, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.check_box :print_ready, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+
+        <div class="form-group">
+          <%=  f.hidden_field :magazine_id, :value => params[:magazine_id] %>
+          <%=  f.hidden_field :issue_id, :value => params[:issue_id] %>
+          <div class="col-sm-4 col-sm-offset-2">
+            <% button = (controller_name=="articles" && action_name == "new") ?  "Create" : "Update"%>
+
+            <%= f.submit button, class: "btn btn-primary" %>
+          </div>
+        </div>
+    <%end%>
+  </div>
+</section>
+
+<script>
+    $(function() {
+        var $j = jQuery.noConflict();
+        $j("#datepicker").datepicker();
+    });
+</script>

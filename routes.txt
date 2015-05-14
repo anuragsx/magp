@@ -1,0 +1,95 @@
+                       Prefix Verb   URI Pattern                                       Controller#Action
+    download_url_article_file GET    /article_files/:id/download_url(.:format)         article_files#download_url
+download_content_article_file GET    /article_files/:id/download_content(.:format)     article_files#download_content
+        article_article_files GET    /articles/:article_id/article_files(.:format)     article_files#index
+                              POST   /articles/:article_id/article_files(.:format)     article_files#create
+     new_article_article_file GET    /articles/:article_id/article_files/new(.:format) article_files#new
+            edit_article_file GET    /article_files/:id/edit(.:format)                 article_files#edit
+                 article_file GET    /article_files/:id(.:format)                      article_files#show
+                              PATCH  /article_files/:id(.:format)                      article_files#update
+                              PUT    /article_files/:id(.:format)                      article_files#update
+                              DELETE /article_files/:id(.:format)                      article_files#destroy
+               issue_articles GET    /issues/:issue_id/articles(.:format)              articles#index
+                              POST   /issues/:issue_id/articles(.:format)              articles#create
+            new_issue_article GET    /issues/:issue_id/articles/new(.:format)          articles#new
+                 edit_article GET    /articles/:id/edit(.:format)                      articles#edit
+                      article GET    /articles/:id(.:format)                           articles#show
+                              PATCH  /articles/:id(.:format)                           articles#update
+                              PUT    /articles/:id(.:format)                           articles#update
+                              DELETE /articles/:id(.:format)                           articles#destroy
+              magazine_issues GET    /magazines/:magazine_id/issues(.:format)          issues#index
+                              POST   /magazines/:magazine_id/issues(.:format)          issues#create
+           new_magazine_issue GET    /magazines/:magazine_id/issues/new(.:format)      issues#new
+                   edit_issue GET    /issues/:id/edit(.:format)                        issues#edit
+                        issue GET    /issues/:id(.:format)                             issues#show
+                              PATCH  /issues/:id(.:format)                             issues#update
+                              PUT    /issues/:id(.:format)                             issues#update
+                              DELETE /issues/:id(.:format)                             issues#destroy
+                    magazines GET    /magazines(.:format)                              magazines#index
+                              POST   /magazines(.:format)                              magazines#create
+                 new_magazine GET    /magazines/new(.:format)                          magazines#new
+                edit_magazine GET    /magazines/:id/edit(.:format)                     magazines#edit
+                     magazine GET    /magazines/:id(.:format)                          magazines#show
+                              PATCH  /magazines/:id(.:format)                          magazines#update
+                              PUT    /magazines/:id(.:format)                          magazines#update
+                              DELETE /magazines/:id(.:format)                          magazines#destroy
+                     contacts GET    /contacts(.:format)                               contacts#index
+                              POST   /contacts(.:format)                               contacts#create
+                  new_contact GET    /contacts/new(.:format)                           contacts#new
+                 edit_contact GET    /contacts/:id/edit(.:format)                      contacts#edit
+                      contact GET    /contacts/:id(.:format)                           contacts#show
+                              PATCH  /contacts/:id(.:format)                           contacts#update
+                              PUT    /contacts/:id(.:format)                           contacts#update
+                              DELETE /contacts/:id(.:format)                           contacts#destroy
+                organizations GET    /organizations(.:format)                          organizations#index
+                              POST   /organizations(.:format)                          organizations#create
+             new_organization GET    /organizations/new(.:format)                      organizations#new
+            edit_organization GET    /organizations/:id/edit(.:format)                 organizations#edit
+                 organization GET    /organizations/:id(.:format)                      organizations#show
+                              PATCH  /organizations/:id(.:format)                      organizations#update
+                              PUT    /organizations/:id(.:format)                      organizations#update
+                              DELETE /organizations/:id(.:format)                      organizations#destroy
+             new_user_session GET    /users/sign_in(.:format)                          devise/sessions#new
+                 user_session POST   /users/sign_in(.:format)                          devise/sessions#create
+         destroy_user_session DELETE /users/sign_out(.:format)                         devise/sessions#destroy
+                user_password POST   /users/password(.:format)                         devise/passwords#create
+            new_user_password GET    /users/password/new(.:format)                     devise/passwords#new
+           edit_user_password GET    /users/password/edit(.:format)                    devise/passwords#edit
+                              PATCH  /users/password(.:format)                         devise/passwords#update
+                              PUT    /users/password(.:format)                         devise/passwords#update
+     cancel_user_registration GET    /users/cancel(.:format)                           devise/registrations#cancel
+            user_registration POST   /users(.:format)                                  devise/registrations#create
+        new_user_registration GET    /users/sign_up(.:format)                          devise/registrations#new
+       edit_user_registration GET    /users/edit(.:format)                             devise/registrations#edit
+                              PATCH  /users(.:format)                                  devise/registrations#update
+                              PUT    /users(.:format)                                  devise/registrations#update
+                              DELETE /users(.:format)                                  devise/registrations#destroy
+                         root GET    /                                                 home#index
+                        users GET    /users(.:format)                                  users#index
+                              POST   /users(.:format)                                  users#create
+                     new_user GET    /users/new(.:format)                              users#new
+                    edit_user GET    /users/:id/edit(.:format)                         users#edit
+                         user GET    /users/:id(.:format)                              users#show
+                              PATCH  /users/:id(.:format)                              users#update
+                              PUT    /users/:id(.:format)                              users#update
+                              DELETE /users/:id(.:format)                              users#destroy
+                 users_create POST   /users/create(.:format)                           users#create
+                    users_new GET    /users/new(.:format)                              users#new
+                              GET    /users/:id/edit(.:format)                         users#edit
+                              PUT    /users/:id/update(.:format)                       users#update
+                              GET    /users(.:format)                                  users#index
+                              POST   /users(.:format)                                  users#create
+                              GET    /users/new(.:format)                              users#new
+                              GET    /users/:id/edit(.:format)                         users#edit
+                              GET    /users/:id(.:format)                              users#show
+                              PATCH  /users/:id(.:format)                              users#update
+                              PUT    /users/:id(.:format)                              users#update
+                              DELETE /users/:id(.:format)                              users#destroy
+                     comments GET    /comments(.:format)                               comments#index
+                              POST   /comments(.:format)                               comments#create
+                  new_comment GET    /comments/new(.:format)                           comments#new
+                 edit_comment GET    /comments/:id/edit(.:format)                      comments#edit
+                      comment GET    /comments/:id(.:format)                           comments#show
+                              PATCH  /comments/:id(.:format)                           comments#update
+                              PUT    /comments/:id(.:format)                           comments#update
+                              DELETE /comments/:id(.:format)                           comments#destroy

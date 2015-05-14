@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Web Application | todo</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <%= stylesheet_link_tag    'all', 'bootstrap', 'animate','font-awesome.min',
+                             'font','plugin','app' %>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <%= javascript_include_tag 'application', 'respond.min', 'html5', 'fix', 'jquery.min', 'bootstrap', 'app', 'app.plugin',
+                             'app.data', 'jquery.slimscroll.min', 'jquery.sparkline.min', 'jquery.easy-pie-chart',
+                             'raphael-min', 'morris.min', 'data-turbolinks-track' => true %>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <%= csrf_meta_tags %>
+  <script>
+     //jQuery.noConflict()
+      $.noConflict();
+  </script>
+</head>
+<body>
+
+<section class="hbox stretch">
+<!-- .aside -->
+<aside class="bg-dark aside-sm" id="nav">
+<section class="vbox">
+<header class="dker nav-bar">
+  <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+    <i class="fa fa-bars"></i>
+  </a>
+  <a href="#" class="nav-brand" data-toggle="fullscreen">todo</a>
+  <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
+    <i class="fa fa-comment-o"></i>
+  </a>
+</header>
+<section>
+  <nav class="nav-primary hidden-xs">
+    <ul class="nav">
+        <% unless Magazine.all.size.blank?%>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-left: 10px;"><%= params[:magazine_id].blank? ? "Select a Magazine" : selected_magazine(params[:magazine_id])%> <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <% Magazine.all.each do |magazine|%>
+                    <li><%= link_to magazine.title, magazine_issues_path(magazine)%></li>
+                <%end%>
+              </ul>
+            </li>
+        <%end%>
+      <% if (params[:issue_id].present? && params[:magazine_id].present? && magazine_issues(params[:magazine_id].present?))%>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-left: 10px;"><%= params[:issue_id].blank? ? "Select an Issue" : selected_issue(params[:issue_id])%> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <% magazine_issues(params[:magazine_id]).each do |issue|%>
+                  <li><%= link_to(issue.name, issue_articles_path(issue_id: issue, :magazine_id => params[:magazine_id] )) %></li>
+              <%end%>
+            </ul>
+          </li>
+      <%end%>
+      <li>
+        <% if can? :index, @users %>
+            <a href="/users">
+              <i class="fa fa-eye"></i>
+              <span>Users</span>
+            </a>
+        <%end%>
+      </li>
+      <li>
+        <% if can? :index, @organizations %>
+        <a href="/organizations">
+          <i class="fa fa-eye"></i>
+          <span>Organizations</span>
+        </a>
+        <%end%>
+      </li>
+      <li>
+        <% if can? :index, @contacts %>
+        <a href="/contacts">
+          <i class="fa fa-eye"></i>
+          <span>Contacts</span>
+        </a>
+        <%end%>
+      </li>
+      <li>
+        <% if can? :index, @magazines %>
+        <a href="/magazines">
+          <i class="fa fa-eye"></i>
+          <span>Magazines</span>
+        </a>
+        <%end%>
+      </li>
+    </ul>
+  </nav>
+</section>
+<footer class="footer bg-gradient hidden-xs">
+  <!--<a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
+    <i class="fa fa-power-off"></i>
+
+  </a>-->
+  <a href="#nav" data-toggle="class:nav-vertical" class="btn btn-sm btn-link m-l-n-sm">
+    <i class="fa fa-bars"></i>
+  </a>
+</footer>
+</section>
+</aside>
+<!-- /.aside -->
+<!-- .vbox -->
+<section id="content">
+<section class="vbox">
+<header class="header bg-success bg-gradient">
+  <div style="float: right;">
+    <ul class="nav nav-tabs">
+
+      <% if user_signed_in? %>
+          <li class=""><%= link_to current_user.email, edit_user_registration_path%></li>
+          <li class=""><%= link_to 'Edit Profile', edit_user_registration_path %></li>
+          <li class=""><%= link_to "Logout", destroy_user_session_path, method: :delete%></li>
+      <%end%>
+    </ul>
+  </div>
+</header>
+<section class="scrollable wrapper">
+<div class="tab-content">
+<div class="tab-pane active" id="static">
+  <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) %>
+          <%= content_tag :div, msg, :class => "flash_#{name}" %>
+      <% end %>
+  <% end %>
+<%= yield%>
+</div>
+
+</div>
+</section>
+</section>
+<a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+</section>
+<!-- /.vbox -->
+</section>
+</section>
+</body>
+</html>

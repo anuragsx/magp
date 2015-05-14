@@ -1,0 +1,28 @@
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+  <a class="nav-brand" href="index.html">Application Name</a>
+  <div class="row m-n">
+    <div class="col-md-4 col-md-offset-4 m-t-lg">
+      <section class="panel">
+        <header class="panel-heading text-center">
+          Forgot your password?
+        </header>
+        <br />
+        <% flash.each do |name, msg| %>
+            <% if msg.is_a?(String) %>
+                <%= content_tag :div, msg, :class => "flash_#{name}", style: "margin-left:17px;color:red;" %>
+            <% end %>
+        <% end %>
+        <%= devise_error_messages! %>
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post,class:"panel-body" }) do |f| %>
+            <div class="form-group">
+              <label class="control-label">Email</label>
+              <%= f.email_field :email, autofocus: true, placeholder: "test@example.com", class: "form-control"%>
+            </div>
+            <%= f.submit "Send me reset password instructions", class: "btn btn-info" %>
+            <div class="line line-dashed"></div>
+            <div class="line line-dashed"></div>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1 @@
+"undefined"!=typeof CKEDITOR?CKEDITOR.editorConfig=function(e){e.uiColor="#AADC6E",e.disableNativeSpellChecker=!0,e.toolbar=[["SpellChecker","Scayt"],["CreatePlaceholder"],["Bold","Italic","Underline","Strike","-","RemoveFormat"],["NumberedList","BulletedList"],["Format"]]}:console.log("ckeditor not loaded");

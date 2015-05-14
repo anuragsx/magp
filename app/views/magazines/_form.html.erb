@@ -1,0 +1,23 @@
+<section class="panel">
+  <header class="panel-heading font-bold">
+    <%= (controller_name=="magazines" && action_name == "new") ?  "New Magazine" : "Edit Magazine"%>
+  </header>
+  <div class="panel-body">
+        <%= form_for(@magazine, html: {class:"form-horizontal"}) do |f| %>
+        <%= error_messages!(@magazine)%>
+        <div class="form-group">
+          <%= f.label :title, class: "col-sm-2 control-label"%>
+          <div class="col-sm-10">
+            <%= f.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+        <div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+          <div class="col-sm-4 col-sm-offset-2">
+            <% button = (controller_name=="magazines" && action_name == "new") ?  "Create" : "Update"%>
+            <%= f.submit button, class: "btn btn-primary" %>
+          </div>
+        </div>
+    <%end%>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+  <a class="nav-brand" href="index.html">Application Name</a>
+  <div class="row m-n">
+    <div class="col-md-4 col-md-offset-4 m-t-lg">
+      <section class="panel">
+        <header class="panel-heading text-center">
+          Sign in
+        </header>
+        <br />
+        <% flash.each do |name, msg| %>
+            <% if msg.is_a?(String) %>
+                <%= content_tag :div, msg, :class => "flash_#{name}", style: "margin-left:0px;" %>
+            <% end %>
+        <% end %>
+        <%= devise_error_messages! %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class:"panel-body"}  ) do |f| %>
+            <div class="form-group">
+              <label class="control-label">Email</label>
+              <%= f.email_field :email, autofocus: true, placeholder: "test@example.com", class: "form-control"%>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Password</label>
+              <%= f.password_field :password, autocomplete: "off", placeholder: "Password", class: "form-control" %>
+            </div>
+            <% if devise_mapping.rememberable? -%>
+                <div class="checkbox">
+                  <label>
+                    <%= f.check_box :remember_me %> <%= f.label :remember_me %>
+                  </label>
+                </div>
+            <% end -%>
+            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+              <%= link_to "Forgot your password?", new_password_path(resource_name), class:"pull-right m-t-xs" %>
+            <% end -%>
+            <!--<a href="#" class="pull-right m-t-xs"><small>Forgot password?</small></a>-->
+            <%= f.submit "Sign in", class: "btn btn-info" %>
+            <div class="line line-dashed"></div>
+            <!--
+            <a href="#" class="btn btn-facebook btn-block m-b-sm"><i class="fa fa-facebook pull-left"></i>Sign in with Facebook</a>
+            <a href="#" class="btn btn-twitter btn-block"><i class="fa fa-twitter pull-left"></i>Sign in with Twitter</a>
+            -->
+            <div class="line line-dashed"></div>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</section>

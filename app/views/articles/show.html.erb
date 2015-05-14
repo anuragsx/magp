@@ -1,0 +1,203 @@
+<div class="row">
+<div class="col-sm-6">
+
+<section class="panel">
+  <header class="panel-heading font-bold"><h5><strong><%= @article.title%></strong></h5> <% if params[:ver].present? %><%= link_to "Back to Original Version", article_path(@article, issue_id: params[:issue_id],:magazine_id => params[:magazine_id])%><%end%></header>
+  <div class="panel-body">
+    <%= form_for([@issue, @article], html: {class:"form-horizontal", multipart: true, role: "form"}) do |f| %>
+        <%= error_messages!(@article)%>
+        <div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+
+          <div class="col-sm-10" style="margin-left: 18px;">
+            <%= f.text_area :article_text, class: "ckeditor" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%=  f.hidden_field :magazine_id, :value => params[:magazine_id] %>
+          <%=  f.hidden_field :issue_id, :value => params[:issue_id] %>
+          <div class="col-sm-4 col-sm-offset-2" style="margin-left:18px;">
+            <% button = (controller_name=="articles" && action_name == "new") ?  "Create" : "Update"%>
+            <% if @article.contributor == current_user.name%>
+                <%= f.submit(button, class: "btn btn-primary") %>
+            <%else%>
+                Only contributor can update the article.
+            <%end%>
+          </div>
+    <%end%>
+   </div>
+
+
+    <%= form_for(@article_file, url: article_article_files_path(@article), method: :post, html: {class:"form-horizontal", multipart: true, role: "form"}) do |f| %>
+        <%= error_messages!(@article)%>
+        <div class="line line-dashed line-lg pull-in"></div>
+        <div class="form-group">
+
+
+          <div class="col-sm-10" style="margin-left: 5px;">
+            <%= f.label "Browse Pictures/Files", class: "col-sm-2 control-label"%>
+          </div>
+          <br />
+          <div class="col-sm-10" style="margin-left: 18px;">
+            <%#= f.label "Pictures/Files", class: "col-sm-2 control-label"%>
+            <%= f.file_field :article_file, multiple: true%>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%=  f.hidden_field :magazine_id, :value => params[:magazine_id] %>
+          <%=  f.hidden_field :issue_id, :value => params[:issue_id] %>
+          <div class="col-sm-4 col-sm-offset-2" style="margin-left:18px;">
+            <% button = (controller_name=="articles" && action_name == "new") ?  "Create" : "Upload Files"%>
+            <%= f.submit(button, class: "btn btn-primary") %>
+          </div>
+         </div>
+    <%end%>
+    <br />
+
+    <% if  !@article_files.blank? %>
+        <% @article_files.each_slice(3) do |slice| -%>
+            <div class="row">
+              <%slice.each do |article_file|%>
+                  <div class="col-lg-4">
+                    <section class="panel">
+                      <header class="panel-heading font-bold"><%= article_file.article_file_file_name%></header>
+                      <div class="panel-body text-center">
+                        <div data-height="150">
+                          <%= (image_tag (file_by_content_type(article_file))) %>
+                        </div>
+                        <div class="line pull-in"></div>
+                        <div class="text-xs">
+                          <% url = "http://" + request.env["HTTP_HOST"] + "/assets/" + article_file.article_file.url(:original, false) %>
+                          <span><%= link_to '<i class="fa fa-download"></i>'.html_safe, download_url_article_file_path(article_file), title: "Download" %></span> |
+                          <span><%= link_to '<i class="fa fa-times text-danger text"></i>'.html_safe, article_file_path(article_file, :issue_id => params[:issue_id], :magazine_id => params[:magazine_id], :article_id => params[:id]), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete"%></span>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+              <%end%>
+            </div>
+        <% end -%>
+       <%end%>
+
+
+</section>
+</div>
+<div class="col-sm-7">
+  <section class="panel">
+    <header class="panel-heading font-bold"><h5><strong><%= "Article Details"%></strong></h5></header>
+    <div class="panel-body">
+      <form class="bs-example form-horizontal">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Editor</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.editor.present? ? @article.editor : "Not available"%></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Contributor</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.contributor.present? ? @article.contributor : "Not available"%></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Photographer</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.photographer.present? ? @article.photographer : "Not available"%></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Contact</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.contact.name.present? ? @article.contact.name : "Not available"%></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Contact Organization</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.contact.organization.name.present? ? @article.contact.organization.name : "Not available"%></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Copy/ Photo/ Print</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.copy_complete? ? "Yes" : "No"%>/ <%= @article.photo_complete? ? "Yes" : "No"%>/ <%= @article.print_ready? ? "Yes" : "No"%></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Description</label>
+          <div class="col-lg-10">
+            <span class="help-block m-b-none"><%= @article.description.present? ? @article.description : "Not available"%></span>
+          </div>
+        </div>
+        <%= link_to '<i class="fa fa-edit"></i>'.html_safe, edit_article_path(@article, :issue_id => params[:issue_id], :magazine_id => params[:magazine_id]), title: "Edit"%> Edit Article |
+        <% if @article.article_files.present?%><%= link_to '<i class="fa fa-download"></i>'.html_safe, download_content_article_file_path(@article), title: "Download Content"%> Download Content<%end%>
+      </form>
+  </section>
+</div>
+
+
+  <div class="col-sm-7">
+    <section class="panel">
+      <header class="panel-heading font-bold"><h5><strong>Article History</strong></h5></header>
+      <div class="panel-body">
+        <form class="bs-example form-horizontal">
+          <ul class="list-unstyled m-b-lg">
+            <% @comments.each do |c|%>
+              <li>
+                <p><i class="fa fa-comment"></i>&nbsp;<%= c.description%></p>
+                <small class="block text-muted"><i class="fa fa-clock-o"></i> By <%=c.user.name%> At <%= c.created_at.strftime("%d %b, %Y %I:%M %p")%></small>
+                <div class="line"></div>
+              </li>
+            <%end%>
+            <% @article.versions.reverse.each do |ver|%>
+                <!--<p><i class="fa fa-edit"></i></i>&nbsp;<%#= "Article #{ver.event}d by - #{User.find(ver.whodunnit).name}" + " Version##{ver.id}" if ver.present?%></p>-->
+                    <% if ver.present?%>
+                        <%unless ver.changeset.blank?%>
+                            <% ver.changeset.select{|c| c != "updated_at"}.each do |cs|%>
+                            <%#= ver.object.inspect%>
+                                    <p><i class="fa fa-edit"></i> <%= cs[0].capitalize %> changed to "<%= cs[1][1] %>" by -  <%= User.find(ver.whodunnit).name%> <%= link_to "Version##{ver.id}", article_path(@article, issue_id: params[:issue_id],
+                                                                                                                                                                                                               :magazine_id => params[:magazine_id], :ver => ver.id)%></p>
+
+                        <%end%>
+                     <%end%>
+                <%end%>
+                <div></div>
+            <%end%>
+          </ul>
+        </form>
+        <i class="fa fa-comments"></i> <%= link_to 'Write a comment', new_comment_path(:id => params[:id], :issue_id=> params[:issue_id], :magazine_id=>params[:magazine_id]),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}  %>
+    </section>
+  </div>
+
+<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+</div>
+
+<%#= link_to 'Edit', edit_article_path(@article) %>
+<%#= link_to 'Back', articles_path %>
+<script>
+    $('.ckeditor').ckeditor({
+        // optional config
+    });
+   $(function () {
+  $('.upload').fileUploadUI({
+        uploadTable: $('.upload_files'),
+        downloadTable: $('.download_files'),
+        buildUploadRow: function (files, index) {
+            var file = files[index];
+            return $('<tr><td>' + file.name + '<\/td>' +
+                    '<td class="file_upload_progress"><div><\/div><\/td>' +
+                    '<td class="file_upload_cancel">' +
+                    '<div class="ui-state-default ui-corner-all ui-state-hover" title="Cancel">' +
+                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+                    '<\/div><\/td><\/tr>');
+        },
+        buildDownloadRow: function (file) {
+            return $('<tr><td><img alt="Photo" width="40" height="40" src="' + file.pic_path + '">' + file.name + '<\/td><\/tr>');
+        },
+    });
+});
+</script>
